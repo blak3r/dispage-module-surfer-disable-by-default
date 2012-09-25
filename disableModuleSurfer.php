@@ -4,18 +4,7 @@
  * 
  * INSTRUCTIONS
  * ------------
- * 
- * 1) To make this work, place this php file in the /custom directory.
- * 2) Then, paste this code in \custom\include\MVC\Controller\entry_point_registry.php (create it if it doesn't exist).
- * 
- * $entry_point_registry['disableModuleSurfer'] = array (
- *  'file' => 'custom/disableModuleSurfer.php',
- *  'auth' => false,
- * );
- *
- * Then, point your browser at http://yourcrm/sugarcrm/index.php?entryPoint=disableModuleSurfer
- *
- * Note: If you're a CE user, you probably don't need to create the entryPoint and can just call it directly.
+ * See https://github.com/blak3r/dispage-module-surfer-disable-by-default 
  * 
  * @author Blake Robertson, http://www.blakerobertson.com
  * @license GPLv3
@@ -27,9 +16,10 @@ require_once('include/entryPoint.php');
 require_once('include/utils.php');
 require_once('custom/include/ModuleSurfer/ModuleSurferManager.php');
 
-$selectQry = "select id, user_name from users";
+$selectQry = "select id, user_name from users where status='Active' and is_group='0'";
 $results = $GLOBALS['db']->query($selectQry);
 
+print "<h2>Disable Module Surfer For Module List Views Script</h2>";
 print "<form method='POST'  >";
 print "<div>User ID: <select name='user_id'>";
     
@@ -37,7 +27,7 @@ print "<div>User ID: <select name='user_id'>";
 		print "<option value='{$row['id']}'>{$row['user_name']}</option>";
 	}
 
-print "</select></div><DIV> ALL USERS: <input type='checkbox' name='all_users'></div><div>Module List:<textarea type='text' name='module_list' size='60' row='8' cols='80'/>Accounts,Contacts,Leads,Quotes,Opportunities,Contracts,Reports,Documents,Projects,ProjectTask,Forecasts,Notes,Tasks,Emails,Cases,Calls,Products,Users,Targets,Markers,Maps,Campaigns,Bugs,KBDocuments,weban_WebVisits</textarea></div>";
+print "</select></div><DIV> ALL USERS: <input type='checkbox' name='all_users'></div><div>Module List:<textarea type='text' name='module_list' size='60' rows='8' cols='80' wrap='soft'/>Accounts,Contacts,Leads,Quotes,Opportunities,Contracts,Reports,Documents,Projects,ProjectTask,Forecasts,Notes,Tasks,Emails,Cases,Calls,Products,Users,Targets,Markers,Maps,Campaigns,Bugs,KBDocuments,weban_WebVisits</textarea></div>";
 
 print "<input type='submit'/>";
 print "</form>";
@@ -45,15 +35,13 @@ print "</form>";
 if ($_POST) {
 
     session_start();
-	
+		
 	if($_POST['all_users']) {
 		print "ALL_USERS are being updated!<BR>";
 		$results = $GLOBALS['db']->query($selectQry);
 		while($row = $GLOBALS['db']->fetchByAssoc($results) ) {
 			setFalseForUserId($_POST['module_list'], $row['id']);
 		}
-
-		
 	}
 	else {
 		setFalseForUserId($_POST['module_list'],$_POST['user_id']);
