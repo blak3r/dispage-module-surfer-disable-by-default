@@ -33,6 +33,7 @@ print "<input type='submit'/>";
 print "</form>";
 
 if ($_POST) {
+	$original_session_id = $_SESSION['authenticated_user_id'];
 
     session_start();
 		
@@ -47,6 +48,7 @@ if ($_POST) {
 		setFalseForUserId($_POST['module_list'],$_POST['user_id']);
 	}
 	
+	$_SESSION['authenticated_user_id'] = $original_session_id;	
 }
 
 function setFalseForUserId( $module_list,$user_id) {	
