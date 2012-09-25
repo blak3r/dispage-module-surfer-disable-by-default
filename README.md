@@ -1,6 +1,8 @@
 ## General
 
   This simple script makes it easy to disable Module Surfer on all list views by default.  (The default behavior is to have it enabled by default).
+  
+  Author: Blake Robertson, <http://www.blakerobertson.com>
 
 ## Instructions
   
