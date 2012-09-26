@@ -16,6 +16,15 @@ require_once('include/entryPoint.php');
 require_once('include/utils.php');
 require_once('custom/include/ModuleSurfer/ModuleSurferManager.php');
 
+
+session_start();
+
+global $current_user;
+if(!is_admin($current_user) ){
+	sugar_die('Admin Only');	
+}
+
+	
 $selectQry = "select id, user_name from users where status='Active' and is_group='0'";
 $results = $GLOBALS['db']->query($selectQry);
 
@@ -34,8 +43,6 @@ print "</form>";
 
 if ($_POST) {
 	$original_session_id = $_SESSION['authenticated_user_id'];
-
-    session_start();
 		
 	if($_POST['all_users']) {
 		print "ALL_USERS are being updated!<BR>";
