@@ -12,7 +12,7 @@
  ``` 
   $entry_point_registry['disableModuleSurfer'] = array (
   'file' => 'custom/disableModuleSurfer.php',
-  'auth' => false,
+  'auth' => true,
  );
  ```
 3. Then, point your browser at http://yourcrm/sugarcrm/index.php?entryPoint=disableModuleSurfer and fill out the form.
